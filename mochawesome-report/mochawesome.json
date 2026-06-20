@@ -1,0 +1,119 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-06-20T14:46:04.881Z",
+    "end": "2026-06-20T14:46:12.071Z",
+    "duration": 7190,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "5e6d3c80-8e1f-44a8-bcf3-fa764ec1d307",
+      "title": "",
+      "fullFile": "D:\\Selenium_WebTesting\\test\\test-sauce.js",
+      "file": "\\test\\test-sauce.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "e5458f17-419b-4a42-a9af-50029c2a6b8c",
+          "title": "Sauce Labs Website",
+          "fullFile": "D:\\Selenium_WebTesting\\test\\test-sauce.js",
+          "file": "\\test\\test-sauce.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Visit Sauce Labs Website",
+              "fullTitle": "Sauce Labs Website Visit Sauce Labs Website",
+              "timedOut": false,
+              "duration": 3598,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "driver = await new Builder().forBrowser('chrome').build();\nawait driver.get('https://www.saucedemo.com'); \n\nlet inputUsername = await driver.findElement(By.css('[data-test=\"username\"]'));\nlet inputPassword = await driver.findElement(By.xpath('//*[@data-test=\"password\"]'));\nlet buttonLogin = await driver.findElement(By.className('submit-button btn_action'));\nawait inputUsername.sendKeys('standard_user');\nawait inputPassword.sendKeys('secret_sauce');\nawait buttonLogin.click();\nconsole.log('Login successful');\nawait driver.sleep(2000); // Wait for 2 seconds to observe the result\nawait driver.quit();",
+              "err": {},
+              "uuid": "4d75af97-ca7b-449d-9d30-21d4e05ab324",
+              "parentUUID": "e5458f17-419b-4a42-a9af-50029c2a6b8c",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Sort products by name Descending",
+              "fullTitle": "Sauce Labs Website Sort products by name Descending",
+              "timedOut": false,
+              "duration": 3584,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "driver = await new Builder().forBrowser('chrome').build();\nawait driver.get('https://www.saucedemo.com');\nlet inputUsername = await driver.findElement(By.css('[data-test=\"username\"]'));\nlet inputPassword = await driver.findElement(By.xpath('//*[@data-test=\"password\"]'));\nlet buttonLogin = await driver.findElement(By.className('submit-button btn_action'));\nawait inputUsername.sendKeys('standard_user');\nawait inputPassword.sendKeys('secret_sauce');\nawait buttonLogin.click();\nconsole.log('Login successful');\n\nlet sortButton = await driver.findElement(By.className('product_sort_container'));\nawait sortButton.click();\nlet sortOption = await driver.findElement(By.css('option[value=\"za\"]'));\nawait sortOption.click();\n\nawait driver.sleep(2000); // Wait for 2 seconds to observe the result\nawait driver.quit();",
+              "err": {},
+              "uuid": "03eb8e04-58e7-44e0-a61b-afa86d46c119",
+              "parentUUID": "e5458f17-419b-4a42-a9af-50029c2a6b8c",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "4d75af97-ca7b-449d-9d30-21d4e05ab324",
+            "03eb8e04-58e7-44e0-a61b-afa86d46c119"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 7182,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 60000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 60000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "10.8.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.3.2"
+    }
+  }
+}
