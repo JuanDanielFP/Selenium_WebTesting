@@ -9,7 +9,7 @@ describe('Sauce Labs Website', function() {
 
     before(async function() {
         let options = new chrome.Options();
-        // options.addArguments('--headless');
+        // options.addArguments('--headless'); // jika ingin Jalankan Chrome dalam mode headless (tanpa tampilan GUI)
         driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
         await driver.get(process.env.SAUCE_URL);
 
