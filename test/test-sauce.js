@@ -3,47 +3,65 @@ const {Builder, By, Key, until} = require('selenium-webdriver');
 const assert = require('assert');
 const chrome = require('selenium-webdriver/chrome');
 // const firefox = require('selenium-webdriver/firefox');
+const LoginPage = require('../pages/LoginPage');
+const InventoryPage = require('../pages/InventoryPage');
+const CheckoutPage = require('../pages/CheckoutPage');
+const { captureVisualRegression } = require('../utils/visualRegression');
 
 describe('Sauce Labs Website', function() {
     let driver;
+    let loginPage;
+    let inventoryPage;
+    let checkoutPage;
 
     before(async function() {
-        let options = new chrome.Options();
-        // options.addArguments('--headless'); // jika ingin Jalankan Chrome dalam mode headless (tanpa tampilan GUI)
+       let options = new chrome.Options();
+        // options.addArguments('--headless'); // Uncomment jika butuh headless
         driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
-        await driver.get(process.env.SAUCE_URL);
-
-        let inputUsername = await driver.findElement(By.css('[data-test="username"]'));
-        let inputPassword = await driver.findElement(By.xpath('//*[@data-test="password"]'));
-        let buttonLogin = await driver.findElement(By.className('submit-button btn_action'));
-        await inputUsername.sendKeys(process.env.SAUCE_USERNAME);
-        await inputPassword.sendKeys(process.env.SAUCE_PASSWORD);
-        await buttonLogin.click();
-
-        console.log('Setup and Login successful');
         
+        // Jika ingin menampilkan browser fullscreen
+        // await driver.manage().window().maximize();
+        
+        // Inisialisasi POM
+        loginPage = new LoginPage(driver);
+        inventoryPage = new InventoryPage(driver);
+        checkoutPage = new CheckoutPage(driver);
     });
+
+    beforeEach(async function() {
+        await loginPage.open();
+    });
+
     after(async function() {
-        await driver.sleep(3000);
+        await driver.sleep(2000); // Jeda sebelum quit untuk keperluan debug visual
         await driver.quit();
     });
 
-    it('Visit Sauce Labs Website', async function() {
-        let inventoryContainer = await driver.findElement(By.id('inventory_container'));
-        assert.ok(inventoryContainer, 'Berhasil login dan masuk ke halaman inventory');
-        console.log('Verified on Dashboard');
-        await driver.sleep(1000);
-    });
-    it('Sort products by name Descending', async function() {
+    
+    // --- TEST CASE POSITIVE ---
+    it('Positive: Login Success, Add to Cart, Checkout', async function() {
+        // 1. Login Success
+        await loginPage.login(process.env.SAUCE_USERNAME, process.env.SAUCE_PASSWORD); // Boleh diganti pakai process.env jika diwajibkan
+        let isLoaded = await inventoryPage.isLoaded();
+        assert.ok(isLoaded, 'Gagal masuk ke halaman inventory');
+        await captureVisualRegression(driver, 'positive_login_success');
 
-        let sortButton = await driver.findElement(By.className('product_sort_container'));
-        await sortButton.click();
-        
+        // 2. Add to Cart
+        await inventoryPage.addBackpackToCart();
         await driver.sleep(1000);
-        let sortOption = await driver.findElement(By.css('option[value="za"]'));
-        await sortOption.click();
+        await inventoryPage.goToCart();
+        await driver.sleep(1000);
+        await captureVisualRegression(driver, 'positive_add_to_cart');
+
+        // 3. Checkout
+        await checkoutPage.startCheckout();
+        await checkoutPage.fillDetails('John', 'Doe', '12345');
+        await captureVisualRegression(driver, 'positive_checkout_overview');
         
-        console.log('Produk berhasil di-sort secara Descending');
+        await checkoutPage.finishCheckout();
+        let successMsg = await checkoutPage.getSuccessMessage();
+        assert.strictEqual(successMsg, 'Thank you for your order!', 'Pesan sukses tidak muncul');
+        await captureVisualRegression(driver, 'positive_checkout_finish');
     });
             
 });
