@@ -9,6 +9,7 @@ class InventoryPage {
     }
 
     async isLoaded() {
+        await this.driver.sleep(2000);
         let container = await this.driver.findElement(this.inventoryContainer);
         return await container.isDisplayed();
     }
